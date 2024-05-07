@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class enemigo : MonoBehaviour
 {
-    // Start is called before the first frame update
     UnityEngine.AI.NavMeshAgent myNavMeshAgent;
     public GameObject jugador;
+    private Animator animator;
     void Start()
     {
         myNavMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
 void FixedUpdate()
 {
     if(myNavMeshAgent.enabled){
         myNavMeshAgent.SetDestination(jugador.transform.position);
+        animator.SetBool("IsWalking", walking);
     }
 }
 void OntriggerEnter(Collider c){
     if(c.gameObject.tag == "Player")
     {
         myNavMeshAgent.enabled=true;
+        animator.SetBool("IsAttacking", attack);
     }
 }
 }
