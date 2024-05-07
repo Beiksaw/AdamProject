@@ -17,14 +17,14 @@ void FixedUpdate()
 {
     if(myNavMeshAgent.enabled){
         myNavMeshAgent.SetDestination(jugador.transform.position);
-        animator.SetBool("IsWalking", walking);
+        //animator.SetBool("walking", walking);
     }
 }
 void OntriggerEnter(Collider c){
     if(c.gameObject.tag == "Player")
     {
         myNavMeshAgent.enabled=true;
-        animator.SetBool("IsAttacking", attack);
+        //animator.SetBool("attacking", attack);
     }
 }
 }
