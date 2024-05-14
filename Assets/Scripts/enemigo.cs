@@ -5,26 +5,47 @@ using UnityEngine;
 public class enemigo : MonoBehaviour
 {
     UnityEngine.AI.NavMeshAgent myNavMeshAgent;
-    public GameObject jugador;
-    private Animator animator;
+    public GameObject target;
+    private Animator ani;
+    public int rutina;
+    public float cronometro;
+    public Quaternion angulo;
+    public float grado;
     void Start()
     {
         myNavMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        ani = GetComponent<Animator>();
+        target = GameObject.Find("jugador");
     }
 
-void FixedUpdate()
-{
-    if(myNavMeshAgent.enabled){
-        myNavMeshAgent.SetDestination(jugador.transform.position);
-        //animator.SetBool("walking", walking);
-    }
-}
-void OntriggerEnter(Collider c){
-    if(c.gameObject.tag == "Player")
+    public void Comportamiento_Enemigo()
     {
-        myNavMeshAgent.enabled=true;
-        //animator.SetBool("attacking", attack);
+        cronometro += 1 * Time.deltaTime;
+        if (cronometro >=4)
+        {
+            rutina = Random.Range(0, 2);
+            cronometro = 0;
+        }
+        switch (rutina)
+        {
+            case 0:
+                ani.SetBool("walking", false);
+                break;
+
+            case 1:
+                grado = Random.Range(0, 360);
+                angulo = Quaternion.Euler(0, grado, 0);
+                rutina++;
+                break;
+            case 2:
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
+            transform.Translate(Vector3.forward * 1 * Time.deltaTime);
+            ani.SetBool("walking", true);
+            break;
+        }
+        void Update()
+        {
+            Comportamiento_Enemigo();
+        }
     }
-}
 }
